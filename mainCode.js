@@ -4,9 +4,12 @@ const numberOutput = document.getElementById('numberOutput');
 var displayNum = ''
 var currentOperation = ''
 var operationJustPerformed = false;
+var previousValue = '';
 
 const clear = document.getElementById('clear');
 const equals = document.getElementById('equals');
+const backspaceBtn = document.getElementById('backspace');
+const ansBtn = document.getElementById('ans');
 
 const plusBtn = document.getElementById('plus');
 const subtractBtn = document.getElementById('subtract');
@@ -17,12 +20,13 @@ const divideBtn = document.getElementById('divide');
 
 clear.addEventListener('click', () => clearDisplay());
 equals.addEventListener('click', () => evaluateOperation());
+backspaceBtn.addEventListener('click', () => backspace());
+ansBtn.addEventListener('click', () => ans());
 
 plusBtn.addEventListener('click', () => performOperation('+'));
 subtractBtn.addEventListener('click', () => performOperation('-'));
 multiplyBtn.addEventListener('click', () => performOperation('x'));
 divideBtn.addEventListener('click', () => performOperation('/'));
-
 
 const num0 = document.getElementById('zero');
 const num1 = document.getElementById('1');
@@ -48,6 +52,20 @@ num8.addEventListener('click', () => changeDisplay(8));
 num9.addEventListener('click', () => changeDisplay(9));
 period.addEventListener('click', () => changeDisplay('.'));
 
+// Allowing keyboard inputs to trigger the button presses
+window.addEventListener('keydown', keyPressed);
+
+function keyPressed(e){
+    console.log(`this key has been pressed: ${e.key}`);
+    if (e.key == '+' ||e.key == '-' ||e.key == '*' ||e.key == '/') {
+        performOperation(e.key);
+    } else if (!isNaN(e.key)) {
+        changeDisplay(e.key);
+    } else if (e.key == 'Enter') {evaluateOperation()}
+    else if (e.key == 'Backspace') {
+        backspace();
+    }
+}
 
 //addBtn.addEventListener('click', () => flexiText.innerHTML = add(5,3));
 function changeDisplay(num) {
@@ -64,7 +82,22 @@ function changeDisplay(num) {
         displayNum += num
         numberOutput.innerHTML = displayNum;
     }
-    
+}
+
+function backspace() {
+    if (displayNum.length > 0) {
+        displayNum = displayNum.slice(0,-1);
+        numberOutput.innerHTML = displayNum;
+    } else return;
+}
+
+function ans() {
+    if (displayNum.includes('=')) {
+        return;
+    } else if (previousValue != '') {
+        displayNum += previousValue;
+        numberOutput.innerHTML = displayNum;
+    } else return;
 }
 
 function performOperation(operation) {
@@ -85,47 +118,72 @@ function evaluateOperation() {
                 indexes.push(i);
             }
         }
+
         numOperations = indexes.length;
         
         var numbers = [];
         var operations = [];
+
+        numOfNumbers = numOperations +1;
+
+        // Loop just for getting the operations
         for (var y = 0; y< numOperations; y++) {
             // Getting the numbers that the operations are performed upon
-            if (y == 0) {
-                numbers.push(displayNum.substring(y,indexes[y]));
-            } else {
-                numbers.push(displayNum.substring(indexes[y]+1,indexes[y+1]));
-            }
-            
-            if (y == numOperations -1) {
-                numbers.push(displayNum.substring(indexes[y]+1));
-            } else {
-                numbers.push(displayNum.substring(indexes[y]+1,indexes[y+1]));
-            }
-            // Getting the operations themselves
+            // This whole section is off if there are more than one operation
             operations.push(displayNum.substring(indexes[y],indexes[y]+1));
         }
+        // Loop just for getting the numbers
+        variableGrab = 0;
+        for (var i = 0; i < numOfNumbers; i++) {
+            // If it is the last number need to make it go to the end
+            if (i == numOfNumbers-1) {
+                numbers.push(displayNum.substring(variableGrab));
+                
+            } else { // Will go through this most of the time
+                numbers.push(displayNum.substring(variableGrab,indexes[i]));
+                variableGrab = indexes[i] + 1;
+            }
+            
+        }
+
+        console.table(numbers);
+        console.table(operations);
 
         currentOperation = '';
         
         var finalNumber = 0;
+        firstOperation = true;
+        // Need to adjust this for multiple operations
+        // Need to figure out a fairly concise way of doing this
         for (var z = 0; z < operations.length; z++) {
             if (operations[z] === '+') {
-                finalNumber = parseInt(numbers[z]) + parseInt(numbers[z+1]);
+                firstNum = parseInt(numbers[z])
+                secondNum = parseInt(numbers[z+1]);
+                if (firstOperation) finalNumber =  firstNum + secondNum;
+                else finalNumber = finalNumber + secondNum;
             } else if (operations[z] === '-') {
-                finalNumber = parseInt(numbers[z]) - parseInt(numbers[z+1]);
+                firstNum = parseInt(numbers[z])
+                secondNum = parseInt(numbers[z+1]);
+                if (firstOperation) finalNumber =  firstNum - secondNum;
+                else finalNumber = finalNumber - secondNum;
             } else if (operations[z] === 'x') {
                 firstNum = parseInt(numbers[z])
                 secondNum = parseInt(numbers[z+1]);
-                finalNumber =  finalNumber + firstNum * secondNum;
-            } else if (operations[z] === '/') {
+                if (firstOperation) finalNumber =  firstNum * secondNum;
+                else finalNumber = finalNumber * secondNum;
                 
-                finalNumber += parseInt(numbers[z]) / parseInt(numbers[z+1]);
+            } else if (operations[z] === '/') {
+                firstNum = parseInt(numbers[z])
+                secondNum = parseInt(numbers[z+1]);
+                if (firstOperation) finalNumber =  firstNum / secondNum;
+                else finalNumber = finalNumber / secondNum;
             }
+            firstOperation = false;
         }
-        displayNum = finalNumber;
+        displayNum = displayNum + ' = ' + finalNumber;
         numberOutput.innerHTML = displayNum;
         operationJustPerformed = true;
+        previousValue = finalNumber;
     }
 }
 
