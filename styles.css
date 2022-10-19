@@ -1,25 +1,55 @@
 .header {
+    margin-top: 15px;
     display: flex;
+}
+
+body {
+    background-color: rgb(0, 0, 0);
+}
+
+#everythingWrapper {
+    height: 900px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#calculator {
+    background-color: rgb(128, 128, 128);
+    box-shadow: 5px 5px rgb(70, 70, 70);
+
+    border-radius: 15px;
+    padding: 0px 20px;
+    width: 32%;
+    min-height: 620px;
+    min-width: 490px;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
 }
 
 #textHeader {
     font-size: 30px;
     font-weight: bold;
-    margin-left: 80px;
+    margin-left: 0px;
 }
 
 .digitField {
-    margin-top: 30px;
-    margin-bottom: 30px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     display: flex;
     width: 100%;
+    height: auto;
     display: flex;
     justify-content: flex-end;
+
 }
 #numberOutput {
-    margin-right: 60px;
     height: 100px;
-    width: 88%;
+    width: 100%;
     background-color: azure;
     box-shadow: 15px 10px rgb(0, 0, 0);
     border-radius: 20px;
@@ -29,23 +59,19 @@
     align-items: center;
 }
 
-
-
-body {
-    background-color: rgb(128, 128, 128);
-}
-
 .functionDiv {
     display: flex;
-    height: 150px;
+    height: 13%;
+    margin-left: 0px;
+    width: 106%;
     justify-content: space-around;
     align-items: center;
+    margin-bottom: 10px;
 }
 
 .functionButton {
-    width: 120px;
-    height: 120px;
-    margin-left: 20px;
+    width: 15%;
+    height: 90%;
     border-radius: 60px;
     background-color: rgb(240, 240, 240);
     border: 1px solid rgb(240, 240, 240);
@@ -54,18 +80,23 @@ body {
     transition: 0.25s;
 }
 
+.functionDiv #divide {
+    margin-right: 10px;
+}
+
 .functionButton:hover {
     transform: scale(1.35);
     transition: 0.25s;
     font-size: 48px;
 }
 #buttonsAndOthers {
-    margin-top: 30px;
+    margin-top: 5px;
     display: flex;
+    height: 300px;
 }
 #numberButtons {
     display: flex;
-    height:500px;
+    height:auto;
     width: 80%;
     justify-content: space-around;
     flex-wrap: wrap;
@@ -74,9 +105,9 @@ body {
 #rightSideBtns {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items:center;
-    height:500px;
+    height:100%;
     width: 20%;
 }
 
@@ -96,9 +127,8 @@ body {
   }
 
 .numBtn {
-    margin-top: 10px;
-    width: 160px;
-    height: 100px;
+    width: 23%;
+    height: 19%;
     background-color: rgb(212, 212, 212);
     font-size: 36px;
     border: 1px solid rgb(212, 212, 212);
@@ -108,10 +138,11 @@ body {
     flex-shrink: 1;
 }
 
+
 .funcBtn {
-    margin-top: 10px;
-    width: 100px;
-    height: 100px;
+    margin-left: 10px;
+    width: 85%;
+    height: 19%;
     background-color: rgb(255, 168, 45);
     font-size: 36px;
     border: 1px solid rgb(255, 168, 45);
@@ -126,7 +157,7 @@ body {
 }
 
 #zero {
-    width: 500px;
+    width: 250px;
     padding-left:70px;
     text-align: left;
     flex-shrink: 2;
